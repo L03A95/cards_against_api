@@ -1,6 +1,6 @@
 // REST Express
 const express = require('express')
-const route = require('./routes/main')
+const route = require('./src/routes/main')
 
 const app = express()
 const port = 3001
@@ -8,7 +8,7 @@ const port = 3001
 // Socket.io
 const http = require('http');
 const socketIO = require('socket.io');
-const configureSocketEvents = require('./socketio');
+const configureSocketEvents = require('./src/socketio');
 
 const server = http.createServer(app);
 const io = socketIO(server);
