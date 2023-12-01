@@ -1,6 +1,9 @@
+require('dotenv').config()
 // REST Express
 const express = require('express')
 const route = require('./src/routes/main')
+require('./src/db/mongo')
+const bodyParser = require('body-parser');
 
 const app = express()
 const port = 3001
@@ -15,6 +18,8 @@ const io = socketIO(server);
 
 configureSocketEvents(io);
 //
+
+app.use(bodyParser.json())
 
 app.use('/', route)
 
