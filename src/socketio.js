@@ -3,8 +3,8 @@ module.exports = (io) => {
       console.log('Usuario conectado');
   
       // Manejar eventos desde el cliente
-      socket.on('mensaje', (mensaje) => {
-        console.log('Mensaje del cliente:', mensaje);
+      socket.on('newLobby', (data) => {
+        console.log(data);
   
         // Enviar un mensaje a todos los clientes conectados
         io.emit('mensaje', '¡Hola desde el servidor!');
