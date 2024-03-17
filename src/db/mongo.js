@@ -1,2 +1,4 @@
 
-// let lobbys = []
+let lobbys = []
+
+module.exports = {lobbys}

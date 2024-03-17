@@ -1,8 +1,9 @@
 const express = require('express');
 const userRouter = express.Router()
 const {signUp} = require('../controllers/userController')
+const {lobbys} = require('../db/mongo')
 
-let lobbys = []
+
 
 userRouter.post('/newLobby', async (req,res) => {
     try {
@@ -25,7 +26,9 @@ userRouter.post('/searchLobby/:id', async (req, res) => {
         if (!result) {
             throw new Error("No se ha encontrado un Lobby con ese id")
         }
-        lobbys[req.params.id].players.push({user: req.body.user, admin: false})
+        // if (req.body.user) {
+        //     lobbys[req.params.id].players.push({user: req.body.user, admin: false})
+        // }
         res.status(200).json(result)
     } catch (error) {
         res.status(404).json(error.message)
