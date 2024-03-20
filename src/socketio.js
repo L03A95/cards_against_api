@@ -3,33 +3,39 @@ const {lobbys} = require('./db/mongo')
 module.exports = (io) => {
   
   io.on('connection', (socket) => {
-    
-      // socket.on('newLobby', (data) => {
-      //   console.log(data);
-  
-        
-      //   io.emit('mensaje', '¡Hola desde el servidor!');
-      // });
 
       socket.on('LobbyConnect', (data) => {
-        if (!lobbys[data.id].players.some((player) => player.user === data.user.user) && data.user.user != '') {
+        if (!lobbys[data.id] || !lobbys[data.id].players) {
+          return 
+        }
+
+        if (!lobbys[data.id]?.players.some((player) => player.user === data.user.user) && data.user.user != '') {
           lobbys[data.id].players.push(data.user)
         }
         
-        console.log("Se ha conectado" + data.user + "a la sala " + data.id)
+        // console.log("Se ha conectado" + data.user + "a la sala " + data.id)
 
-        io.emit('playersList', {
+        io.emit('playersList', {  //hacer que este evento se envie condicionalmente
           list: lobbys[data.id].players
         })
       })
 
       socket.on('LobbyDisconnect', (data) => {
-        let removeUser = lobbys[data.id].players.indexOf(data.user);
-        lobbys[data.id].players.splice(removeUser, 1);
+        if (!lobbys[data.id] || !lobbys[data.id].players) {
+          return
+        }
 
-        console.log("Se ha desconectado" + data.user + "de la sala " + data.id)
+        let result = lobbys[data.id]?.players.filter((e) => {
+          return e.user !== data.user
+        });
+        console.log(result)
 
-        io.emit('playersList', {
+        console.log("Se ha desconectado " + data.user + " de la sala " + data.id)
+
+
+        lobbys[data.id].players = result;
+
+        io.emit('playersList', { //hacer que este evento se envie condicionalmente
           list: lobbys[data.id].players
         })
       })
